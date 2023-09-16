@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Generator : MonoBehaviour
@@ -46,5 +47,10 @@ public class Generator : MonoBehaviour
             health = startingHealth;
             canRepair = false;
         }
+    }
+
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.DrawWireSphere(transform.position, interactionRange);
     }
 }
