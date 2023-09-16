@@ -26,5 +26,10 @@ public class Player : MonoBehaviour
 
         movement = new Vector2(moveX, moveY);
         rb.AddForce(movement * movementSpeed * Time.deltaTime);
+
+        if(movement != Vector2.zero)
+        {
+            transform.up = movement;
+        }
     }
 }
