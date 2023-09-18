@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Security.Cryptography;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class UseWeapon : MonoBehaviour
 {
@@ -16,12 +17,17 @@ public class UseWeapon : MonoBehaviour
 
     [Header("For picking up the weapon")]
     [SerializeField] float pickUpRange;
+    [SerializeField] float pickUpTime;
     [SerializeField] Transform rHand;
     [SerializeField] Transform lHand;
     
     private RaycastHit2D _hit;
 
     /*[HideInInspector]*/ public bool hasPickedUp = false;
+    public bool isLeft;
+    
+    private float pickUpInterval = 0;
+
     private Transform player;
 
     private Vector3 additionalSpread;
@@ -43,10 +49,22 @@ public class UseWeapon : MonoBehaviour
     {   
         if(hasPickedUp)
         {
-            if(Input.GetKey(KeyCode.J) && Time.time >= nextTimeToFire)
+            //I have no idea how to implement it diferently, so i have to do this fucking madness
+            if(isLeft)
             {
-                nextTimeToFire = Time.time + 1f/baseWeapon.fireRate;
-                Shoot();
+                if(Input.GetKeyDown(KeyCode.J) && Time.time >= nextTimeToFire)
+                {
+                    nextTimeToFire = Time.time + 1f/baseWeapon.fireRate;
+                    Shoot();
+                }
+            }
+            else
+            {
+                if(Input.GetKeyDown(KeyCode.K) && Time.time >= nextTimeToFire)
+                {
+                    nextTimeToFire = Time.time + 1f/baseWeapon.fireRate;
+                    Shoot();
+                }
             }
         }
         else
@@ -74,7 +92,12 @@ public class UseWeapon : MonoBehaviour
             _hit = Physics2D.Raycast(transform.position, transform.up + additionalSpread);
             if(_hit.collider)
             {
-                Debug.Log("hit " + _hit.collider.name);
+                CreateEffects(baseWeapon.impactEffects);
+                Enemy enemy = _hit.transform.GetComponent<Enemy>();
+                if(enemy != null)
+                {
+                    enemy.DamageEnemy(baseWeapon.damage);
+                }
             }
         }
         if(baseWeapon.isMelle)
@@ -82,7 +105,12 @@ public class UseWeapon : MonoBehaviour
             Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(transform.position, baseWeapon.range, baseWeapon.layersToHit);
             foreach(Collider2D enemy in hitEnemies)
             {
-                Debug.Log("Damaged");
+                CreateEffects(baseWeapon.impactEffects);
+                Enemy e = enemy.GetComponent<Enemy>();
+                if(e != null)
+                {
+                    e.DamageEnemy(baseWeapon.damage);
+                }
             }
         }
     }
@@ -90,36 +118,48 @@ public class UseWeapon : MonoBehaviour
     void PickUpWeapon(float distance)
     {
         if(distance <= pickUpRange)
-        {
+        {   
             //Left hand
-            if(Input.GetKeyDown(KeyCode.J))
+            if(Input.GetKey(KeyCode.J))
             {
-                if(lArm.weaponContainer == null)
+                pickUpInterval += 0.1f;
+                if(pickUpTime <= pickUpInterval)
                 {
-                    ParentObj(lHand);
-                }
-                else
-                {
-                    ThrowWeapon(lArm); 
-                    ParentObj(lHand);
-                }
+                    if(lArm.weaponContainer == null)
+                    {
+                        ParentObj(lHand);
+                    }
+                    else
+                    {
+                        ThrowWeapon(lArm); 
+                        ParentObj(lHand);
+                    }
 
-                hasPickedUp = true;
+                    hasPickedUp = true;
+                    pickUpInterval = 0;
+                    isLeft = true;
+                }
             }
             //Right hand
-            if(Input.GetKeyDown(KeyCode.K))
+            if(Input.GetKey(KeyCode.K))
             {
-                if(rArm.weaponContainer == null)
+                pickUpInterval += 0.1f;
+                if(pickUpTime <= pickUpInterval)
                 {
-                    ParentObj(rHand);
-                }
-                else
-                {
-                    ThrowWeapon(rArm);
-                    ParentObj(rHand);
-                }
+                    if(rArm.weaponContainer == null)
+                    {
+                        ParentObj(rHand);
+                    }
+                    else
+                    {
+                        ThrowWeapon(rArm);
+                        ParentObj(rHand);
+                    }
 
-                hasPickedUp = true;
+                    hasPickedUp = true;
+                    pickUpInterval = 0;
+                    isLeft = false;
+                }
             }
         }
     }
@@ -128,17 +168,29 @@ public class UseWeapon : MonoBehaviour
     {
         transform.SetParent(obj, false);
         transform.position = obj.position;
-        transform.rotation = Quaternion.Euler(Vector3.zero);
+        transform.rotation = player.rotation;
 
         lArm.weaponContainer = gameObject;
     }
 
     void ThrowWeapon(Arm arm)
     {
+        //Again i have no fucking idea how to implement this better 
         Transform gotWeapon = arm.weaponContainer.transform;
-        gotWeapon.GetComponent<UseWeapon>().hasPickedUp = false;
+        UseWeapon wep = gotWeapon.GetComponent<UseWeapon>();
+        wep.hasPickedUp = false;
+        wep.isLeft = false;
         gotWeapon.SetParent(null);
 
+    }
+
+    void CreateEffects(GameObject[] impcts)
+    {
+        for(int i = 0; i < impcts.Length; i++)
+        {
+            GameObject instObj = Instantiate(impcts[i], _hit.point, Quaternion.LookRotation(_hit.normal));
+            Destroy(instObj, 2f);
+        }
     }
 
     void OnDrawGizmosSelected() 

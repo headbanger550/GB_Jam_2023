@@ -16,6 +16,8 @@ MonoBehaviour:
   description: The 'ol reliable
   damage: 15
   fireRate: 1
+  impactEffects:
+  - {fileID: 7176727642907536946, guid: a9988e490bac37646b86799381c49845, type: 3}
   isGun: 0
   hasSpread: 0
   isMelle: 1

@@ -12,6 +12,10 @@ public class Weapon : ScriptableObject
 
     [Space]
 
+    public GameObject[] impactEffects;
+
+    [Space]
+
     public bool isGun;
     public bool hasSpread;
 

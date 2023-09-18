@@ -1,12 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using Unity.VisualScripting.Dependencies.Sqlite;
 using UnityEngine;
 
 public class Generator : MonoBehaviour
 {
     [SerializeField] float health = 100;
+    [SerializeField] float maxHealth;
+
+    [Space]
+
     [SerializeField] float degradeTime;
+    [SerializeField] float repairTime;
 
     [Space]
 
@@ -17,10 +23,15 @@ public class Generator : MonoBehaviour
 
     private Transform player;
 
+    private bool hasGeneratedWave = false;
+    private WaveSystem[] waveSystems;
+
     // Start is called before the first frame update
     void Start()
     {
         player = FindObjectOfType<Player>().transform;
+        waveSystems = FindObjectsOfType<WaveSystem>();
+        maxHealth = health;
 
         startingHealth = health;
     }
@@ -33,20 +44,53 @@ public class Generator : MonoBehaviour
         //The idea is that after we lose a certain amount of health we would need to repair the machine
         //So the machine i think is going to have a health (which you can later improve)
         health -= degradeTime * Time.deltaTime;
+        float degradePercent = (health/maxHealth) * 100;
 
-        //TODO: check if health has gone down certain amount of percent ( because i'm too lazy to implement this now :) ) 
-        if(health <= 20)
+        if(degradePercent <= 60f)
         {
             Debug.Log("REPAIR ME");
             canRepair = true;
         }
 
-        //TODO: have a delay when the player is fixing the machine
+        //TODO: make a little bar that shows the repair delay
         if(distanceToPlayer <= interactionRange && canRepair && Input.GetKeyDown(KeyCode.J))
         {
-            health = startingHealth;
-            canRepair = false;
+            StartCoroutine(RepairDelay());
         }
+
+        if(health <= 0)
+        {
+            Debug.Log("I'm ded :(");
+            canRepair = true;
+
+            if(!hasGeneratedWave)
+            {
+                for (int i = 0; i < waveSystems.Length; i++)
+                {
+                    waveSystems[i].GenerateWave();
+                }
+
+                hasGeneratedWave = true;
+            }
+        }
+    }
+
+    IEnumerator RepairDelay()
+    {
+        Player playerObj = player.GetComponent<Player>();
+        float startSpeed = playerObj.movementSpeed;
+
+        playerObj.movementSpeed = 0;
+
+        yield return new WaitForSeconds(repairTime);
+
+        health = startingHealth;
+        canRepair = false;
+        hasGeneratedWave = false;
+
+        playerObj.movementSpeed = startSpeed;
+
+        Debug.Log("Fixed c:");
     }
 
     void OnDrawGizmosSelected()

@@ -1,10 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] float movementSpeed;
+    public float movementSpeed;
+    [SerializeField] float health;
 
     private float moveX;
     private float moveY;
@@ -30,6 +32,15 @@ public class Player : MonoBehaviour
         if(movement != Vector2.zero)
         {
             transform.up = movement;
+        }
+    }
+
+    public void DamagePlayer(float damage)
+    {
+        health -= damage;
+        if(health <= 0f)
+        {
+            Debug.Log("you ded :(");
         }
     }
 }

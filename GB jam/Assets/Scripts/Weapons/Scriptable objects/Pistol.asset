@@ -14,12 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 'Pistol '
   description: It goes pew pew
-  damage: 20
+  damage: 1
   fireRate: 1.5
+  impactEffects:
+  - {fileID: 7176727642907536946, guid: a9988e490bac37646b86799381c49845, type: 3}
   isGun: 1
   hasSpread: 0
   isMelle: 0
   range: 0
   layersToHit:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 55
