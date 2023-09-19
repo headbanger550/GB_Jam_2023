@@ -10,16 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2af5a4b6cc1fc0443b9fea7db74bc7d7, type: 3}
-  m_Name: Pistol
+  m_Name: Double barrel
   m_EditorClassIdentifier: 
-  name: 'Pistol '
-  description: It goes pew pew
-  damage: 1
+  name: Double barrel shotgun
+  description: Best-er shotgun >:D
+  damage: 2
   fireRate: 1.5
-  impactEffects:
-  - {fileID: 7176727642907536946, guid: a9988e490bac37646b86799381c49845, type: 3}
+  impactEffects: []
   isGun: 1
-  hasSpread: 0
+  hasSpread: 1
   isMelle: 0
   range: 0
   layersToHit:

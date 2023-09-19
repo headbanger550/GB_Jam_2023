@@ -27,12 +27,16 @@ public class Player : MonoBehaviour
         moveY = Input.GetAxisRaw("Vertical");
 
         movement = new Vector2(moveX, moveY);
-        rb.AddForce(movement * movementSpeed * Time.deltaTime);
-
+        
         if(movement != Vector2.zero)
         {
             transform.up = movement;
         }
+    }
+
+    void FixedUpdate() 
+    {
+        rb.MovePosition(rb.position + movement * movementSpeed * Time.fixedDeltaTime);
     }
 
     public void DamagePlayer(float damage)

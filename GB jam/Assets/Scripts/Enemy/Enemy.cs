@@ -90,7 +90,7 @@ public class Enemy : MonoBehaviour
             nextTimeToAttack = Time.time + 1f/enemyAttackRate;
             AttackPlayer();
         }
-        if(enemyId == 2 || enemyId == 3 && Time.time >= nextTimeToAttack)
+        if((enemyId == 2 || enemyId == 3) && Time.time >= nextTimeToAttack)
         {
             nextTimeToAttack = Time.time + 1f/enemyAttackRate;
             DoSomethingElse();
@@ -187,7 +187,7 @@ public class Enemy : MonoBehaviour
         Vector2 dirrection = ((Vector2)path.vectorPath[currentWaypoint] - rb.position).normalized;
         Vector2 force = dirrection * speed * Time.deltaTime;
 
-        rb.AddForce(force);
+        rb.MovePosition(rb.position + force);
 
         float distance = Vector2.Distance(rb.position, path.vectorPath[currentWaypoint]);
 

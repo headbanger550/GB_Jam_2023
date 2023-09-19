@@ -14,6 +14,7 @@ public class UseWeapon : MonoBehaviour
     [Header("For gun")]
     [SerializeField] float spreadX;
     [SerializeField] float spreadY;
+    [SerializeField] int bulletCount;
 
     [Header("For picking up the weapon")]
     [SerializeField] float pickUpRange;
@@ -52,7 +53,7 @@ public class UseWeapon : MonoBehaviour
             //I have no idea how to implement it diferently, so i have to do this fucking madness
             if(isLeft)
             {
-                if(Input.GetKeyDown(KeyCode.J) && Time.time >= nextTimeToFire)
+                if(Input.GetKey(KeyCode.J) && Time.time >= nextTimeToFire)
                 {
                     nextTimeToFire = Time.time + 1f/baseWeapon.fireRate;
                     Shoot();
@@ -60,7 +61,7 @@ public class UseWeapon : MonoBehaviour
             }
             else
             {
-                if(Input.GetKeyDown(KeyCode.K) && Time.time >= nextTimeToFire)
+                if(Input.GetKey(KeyCode.K) && Time.time >= nextTimeToFire)
                 {
                     nextTimeToFire = Time.time + 1f/baseWeapon.fireRate;
                     Shoot();
@@ -89,14 +90,17 @@ public class UseWeapon : MonoBehaviour
             }
 
             Debug.DrawRay(transform.position, transform.up, Color.red);
-            _hit = Physics2D.Raycast(transform.position, transform.up + additionalSpread);
-            if(_hit.collider)
+            for(int i = 0; i < bulletCount; i++)
             {
-                CreateEffects(baseWeapon.impactEffects);
-                Enemy enemy = _hit.transform.GetComponent<Enemy>();
-                if(enemy != null)
+                _hit = Physics2D.Raycast(transform.position, transform.up + additionalSpread);
+                if(_hit.collider)
                 {
-                    enemy.DamageEnemy(baseWeapon.damage);
+                    CreateEffects(baseWeapon.impactEffects);
+                    Enemy enemy = _hit.transform.GetComponent<Enemy>();
+                    if(enemy != null)
+                    {
+                        enemy.DamageEnemy(baseWeapon.damage);
+                    }
                 }
             }
         }
