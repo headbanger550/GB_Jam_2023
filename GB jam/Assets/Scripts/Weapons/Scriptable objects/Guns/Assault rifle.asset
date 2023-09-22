@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: Assault rifle
   description: Good... yet generic
+  weaponSprite: {fileID: 21300000, guid: bddc94c0a642d3d4eb92a02a2719a52e, type: 3}
   damage: 1.5
   fireRate: 4
   impactEffects: []

@@ -7,6 +7,10 @@ public class Weapon : ScriptableObject
 {
     public new string name;
     public string description;
+    public Sprite weaponSprite;
+
+    [Space]
+
     public float damage;
     public float fireRate;
 
@@ -23,6 +27,13 @@ public class Weapon : ScriptableObject
 
     public bool isMelle;
     public float range;
+
+    [Space]
+
+    public int upgradeId;
+    public int[] upgradeGroup = new int[2];
+    public Sprite[] upgradeImages = new Sprite[2];
+    public string[] descriptions = new string[2];
 
     [Space]
 

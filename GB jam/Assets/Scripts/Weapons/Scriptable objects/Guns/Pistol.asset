@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: 'Pistol '
   description: It goes pew pew
+  weaponSprite: {fileID: 21300000, guid: 33b99190b0eac3d45a693e1cd46f392b, type: 3}
   damage: 1.5
   fireRate: 3
   impactEffects:

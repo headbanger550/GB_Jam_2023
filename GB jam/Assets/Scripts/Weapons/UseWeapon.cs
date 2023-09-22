@@ -7,14 +7,14 @@ using UnityEngine.TextCore.Text;
 
 public class UseWeapon : MonoBehaviour
 {
-    [SerializeField] Weapon baseWeapon;
+    public Weapon baseWeapon;
 
     //[SerializeField] Transform firePoint;
 
     [Header("For gun")]
-    [SerializeField] float spreadX;
-    [SerializeField] float spreadY;
-    [SerializeField] int bulletCount;
+    public float spreadX;
+    public float spreadY;
+    public int bulletCount;
 
     [Header("For picking up the weapon")]
     [SerializeField] float pickUpRange;
@@ -37,12 +37,17 @@ public class UseWeapon : MonoBehaviour
     private Arm lArm;
     private Arm rArm;
 
+    private SpriteRenderer gunSprite;
+
     void OnEnable()
     {
         player = FindObjectOfType<Player>().transform;
 
         lArm = lHand.GetComponent<Arm>();
         rArm = rHand.GetComponent<Arm>();
+
+        gunSprite = GetComponent<SpriteRenderer>();
+        gunSprite.sprite = baseWeapon.weaponSprite;
     }
 
     // Update is called once per frame
@@ -89,10 +94,10 @@ public class UseWeapon : MonoBehaviour
                 additionalSpread = Vector3.zero;
             }
 
-            Debug.DrawRay(transform.position, transform.up, Color.red);
+            Debug.DrawRay(transform.position, transform.right, Color.red);
             for(int i = 0; i < bulletCount; i++)
             {
-                _hit = Physics2D.Raycast(transform.position, transform.up + additionalSpread);
+                _hit = Physics2D.Raycast(transform.position, transform.right + additionalSpread);
                 if(_hit.collider)
                 {
                     CreateEffects(baseWeapon.impactEffects);
@@ -172,7 +177,7 @@ public class UseWeapon : MonoBehaviour
     {
         transform.SetParent(obj, false);
         transform.position = obj.position;
-        transform.rotation = player.rotation;
+        transform.rotation = obj.rotation;
 
         lArm.weaponContainer = gameObject;
     }

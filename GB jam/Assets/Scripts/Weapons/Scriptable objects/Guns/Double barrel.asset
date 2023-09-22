@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: Double barrel
   m_EditorClassIdentifier: 
   name: Double barrel shotgun
-  description: Best-er shotgun >:D
+  description: '"And this, is my BOOM stick"'
+  weaponSprite: {fileID: 21300000, guid: f5925c62cd634914588c07b72074db7a, type: 3}
   damage: 2
   fireRate: 1.5
   impactEffects: []
