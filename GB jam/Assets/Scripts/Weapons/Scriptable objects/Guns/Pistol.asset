@@ -23,6 +23,14 @@ MonoBehaviour:
   hasSpread: 0
   isMelle: 0
   range: 0
+  upgradeId: 1
+  upgradeGroup: 0200000003000000
+  upgradeImages:
+  - {fileID: 21300000, guid: 33b99190b0eac3d45a693e1cd46f392b, type: 3}
+  - {fileID: 21300000, guid: 33b99190b0eac3d45a693e1cd46f392b, type: 3}
+  descriptions:
+  - Shoot more boolers
+  - WAY faster shooting
   layersToHit:
     serializedVersion: 2
     m_Bits: 63

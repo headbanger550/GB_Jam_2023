@@ -6,7 +6,8 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public float movementSpeed;
-    [SerializeField] float health;
+    public float health;
+    public int scoreAmmount;
 
     private float moveX;
     private float moveY;
@@ -26,7 +27,7 @@ public class Player : MonoBehaviour
         moveX = Input.GetAxisRaw("Horizontal");
         moveY = Input.GetAxisRaw("Vertical");
 
-        movement = new Vector2(moveX, moveY);
+        movement = new Vector2(moveX, moveY).normalized;
         
         if(movement != Vector2.zero)
         {

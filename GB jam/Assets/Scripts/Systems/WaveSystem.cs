@@ -61,8 +61,8 @@ public class WaveSystem : MonoBehaviour
         }
         else
         {
-            spawnTimer -= Time.fixedDeltaTime;
-            waveTimer -= Time.fixedDeltaTime;
+            spawnTimer -= 0.01f;
+            waveTimer -= 0.01f;
         }
 
         if(enemyCount == spawnedEnemies.Count)

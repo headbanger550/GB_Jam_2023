@@ -17,11 +17,15 @@ public class Generator : MonoBehaviour
     [Space]
 
     [SerializeField] float interactionRange;
+    [SerializeField] float pickUpTime;
+
+    private float pickUpInterval = 0;
 
     private float startingHealth;
     private bool canRepair = false;
 
     private Transform player;
+    private float startSpeed;
 
     private bool hasGeneratedWave = false;
     private WaveSystem[] waveSystems;
@@ -33,6 +37,7 @@ public class Generator : MonoBehaviour
         waveSystems = FindObjectsOfType<WaveSystem>();
         maxHealth = health;
 
+        startSpeed = player.GetComponent<Player>().movementSpeed;
         startingHealth = health;
     }
 
@@ -53,9 +58,13 @@ public class Generator : MonoBehaviour
         }
 
         //TODO: make a little bar that shows the repair delay
-        if(distanceToPlayer <= interactionRange && canRepair && Input.GetKeyDown(KeyCode.J))
+        if(distanceToPlayer <= interactionRange && canRepair && Input.GetKey(KeyCode.J))
         {
-            StartCoroutine(RepairDelay());
+            pickUpInterval += 0.1f;
+            if(pickUpInterval <= pickUpTime)
+            {
+                StartCoroutine(RepairDelay());
+            }
         }
 
         if(health <= 0)
@@ -68,9 +77,8 @@ public class Generator : MonoBehaviour
                 for (int i = 0; i < waveSystems.Length; i++)
                 {
                     waveSystems[i].GenerateWave();
+                    hasGeneratedWave = true;
                 }
-
-                hasGeneratedWave = true;
             }
         }
     }
@@ -78,8 +86,6 @@ public class Generator : MonoBehaviour
     IEnumerator RepairDelay()
     {
         Player playerObj = player.GetComponent<Player>();
-        float startSpeed = playerObj.movementSpeed;
-
         playerObj.movementSpeed = 0;
 
         yield return new WaitForSeconds(repairTime);

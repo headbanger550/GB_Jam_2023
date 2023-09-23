@@ -117,6 +117,7 @@ MonoBehaviour:
   enemyId: 3
   speed: 0.5
   health: 8
+  scoreToGive: 0
   nextWaypointDisctance: 3
   enemyAttackRate: 0.8
   attackRange: 6.79
@@ -128,7 +129,7 @@ MonoBehaviour:
   enemyGraphics: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
 --- !u!1 &4842639516406334737
 GameObject:
   m_ObjectHideFlags: 0

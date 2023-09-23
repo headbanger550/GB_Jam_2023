@@ -117,9 +117,10 @@ MonoBehaviour:
   enemyId: 1
   speed: 1
   health: 3
+  scoreToGive: 0
   nextWaypointDisctance: 3
   enemyAttackRate: 0.8
-  attackRange: 7.2
+  attackRange: 10
   melleDamage: 0.5
   bullet: {fileID: 5327247455470613477, guid: f35998a187667eb489048dd85d8fb6ac, type: 3}
   bulletSpeed: 10000
@@ -128,7 +129,7 @@ MonoBehaviour:
   enemyGraphics: {fileID: 0}
   enemyLayer:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 128
 --- !u!1 &2196113109302761676
 GameObject:
   m_ObjectHideFlags: 0

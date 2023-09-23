@@ -10,6 +10,7 @@ public class Enemy : MonoBehaviour
     [SerializeField] int enemyId;
     public float speed = 200f;
     public float health;
+    [SerializeField] int scoreToGive;
     [SerializeField] float nextWaypointDisctance;
 
     [Space]
@@ -43,6 +44,7 @@ public class Enemy : MonoBehaviour
     private float nextTimeToAttack;
 
     private bool canMove;
+    private bool hasAppliedBuff = false;
 
     private Seeker seeker;
     private Rigidbody2D rb;
@@ -147,8 +149,6 @@ public class Enemy : MonoBehaviour
 
     public void BuffEnemies()
     {
-        bool hasAppliedBuff = false;
-
         Collider2D[] gotEnemies = Physics2D.OverlapCircleAll(transform.position, attackRange, enemyLayer);
         foreach(Collider2D enemy in gotEnemies)
         {
@@ -203,6 +203,7 @@ public class Enemy : MonoBehaviour
         if(health <= 0)
         {
             waveSystem.enemyCount++;
+            target.GetComponent<Player>().scoreAmmount += scoreToGive;
             Destroy(gameObject);
         }
     }
