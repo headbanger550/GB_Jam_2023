@@ -22,6 +22,7 @@ public class Weapon : ScriptableObject
 
     public bool isGun;
     public bool hasSpread;
+    public bool hasShotLine;
 
     [Space]
 

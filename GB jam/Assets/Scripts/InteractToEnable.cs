@@ -21,7 +21,11 @@ public class InteractToEnable : MonoBehaviour
         float distance = Vector2.Distance(transform.position, player.position);
         if(distance <= interactionRange && Input.GetKeyDown(KeyCode.J))
         {
-            objToEnable.SetActive(true);
+            objToEnable.SetActive(true); 
+        }
+        if(Input.GetKeyDown(KeyCode.K))
+        {
+            objToEnable.SetActive(false);
         }
     }
 

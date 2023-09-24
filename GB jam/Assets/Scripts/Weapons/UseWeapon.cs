@@ -1,26 +1,26 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
+using EZCameraShake;
 
 public class UseWeapon : MonoBehaviour
 {
     public Weapon baseWeapon;
 
-    //[SerializeField] Transform firePoint;
-
     [Header("For gun")]
     public float spreadX;
     public float spreadY;
     public int bulletCount;
+    [SerializeField] LineRenderer shotLine;
 
     [Header("For picking up the weapon")]
     [SerializeField] float pickUpRange;
     [SerializeField] float pickUpTime;
     [SerializeField] Transform rHand;
     [SerializeField] Transform lHand;
+
+    [Header("Camera shake")]
+    [SerializeField] float shakeDuration;
+    [SerializeField] float shakeIntesity;
     
     private RaycastHit2D _hit;
 
@@ -48,6 +48,11 @@ public class UseWeapon : MonoBehaviour
 
         gunSprite = GetComponent<SpriteRenderer>();
         gunSprite.sprite = baseWeapon.weaponSprite;
+
+        /*if(baseWeapon.hasShotLine)
+        {
+            shotLine.enabled = false;
+        }*/
     }
 
     // Update is called once per frame
@@ -61,7 +66,7 @@ public class UseWeapon : MonoBehaviour
                 if(Input.GetKey(KeyCode.J) && Time.time >= nextTimeToFire)
                 {
                     nextTimeToFire = Time.time + 1f/baseWeapon.fireRate;
-                    Shoot();
+                    StartCoroutine(Shoot());
                 }
             }
             else
@@ -69,7 +74,7 @@ public class UseWeapon : MonoBehaviour
                 if(Input.GetKey(KeyCode.K) && Time.time >= nextTimeToFire)
                 {
                     nextTimeToFire = Time.time + 1f/baseWeapon.fireRate;
-                    Shoot();
+                    StartCoroutine(Shoot());
                 }
             }
         }
@@ -81,8 +86,11 @@ public class UseWeapon : MonoBehaviour
 
     }
 
-    void Shoot()
+    IEnumerator Shoot()
     {
+        //Maybe you can get this to work... cus i couldn't for some fucking reason
+        //CameraShaker.Instance.ShakeOnce(shakeDuration, shakeIntesity, 0.1f, 1f);
+
         if(baseWeapon.isGun)
         {
             if(baseWeapon.hasSpread)
@@ -101,12 +109,31 @@ public class UseWeapon : MonoBehaviour
                 if(_hit.collider)
                 {
                     CreateEffects(baseWeapon.impactEffects);
+                    if(baseWeapon.hasShotLine)
+                    {
+                        shotLine.SetPosition(0, transform.position);
+                        shotLine.SetPosition(1, _hit.point);
+                    }
+
                     Enemy enemy = _hit.transform.GetComponent<Enemy>();
                     if(enemy != null)
                     {
                         enemy.DamageEnemy(baseWeapon.damage);
+
+                        //Hit stop for more juicenes 
+                        Time.timeScale = 0;
+                        yield return new WaitForSecondsRealtime(0.05f);
+                        Time.timeScale = 1;
                     }
                 }
+            }
+        }
+        else
+        {
+            if(baseWeapon.hasShotLine)
+            {
+                shotLine.SetPosition(0, transform.position);
+                shotLine.SetPosition(1, transform.position + transform.up * 100);
             }
         }
         if(baseWeapon.isMelle)
@@ -121,6 +148,15 @@ public class UseWeapon : MonoBehaviour
                     e.DamageEnemy(baseWeapon.damage);
                 }
             }
+        }
+
+        if(baseWeapon.hasShotLine)
+        {
+            shotLine.enabled = true;
+
+            yield return new WaitForSeconds(0.02f);
+
+            shotLine.enabled = false;
         }
     }
 
@@ -187,6 +223,7 @@ public class UseWeapon : MonoBehaviour
         //Again i have no fucking idea how to implement this better 
         Transform gotWeapon = arm.weaponContainer.transform;
         UseWeapon wep = gotWeapon.GetComponent<UseWeapon>();
+        arm.weaponContainer = null;
         wep.hasPickedUp = false;
         wep.isLeft = false;
         gotWeapon.SetParent(null);

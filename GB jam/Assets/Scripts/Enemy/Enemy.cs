@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Pathfinding;
-using System.Diagnostics;
-
 public class Enemy : MonoBehaviour
 {
     [Tooltip("0-melle, 1-projectile, 2-buffer, 3-spawner")]
@@ -34,6 +32,10 @@ public class Enemy : MonoBehaviour
     //For when we have the enemy sprites done
     [SerializeField] Transform enemyGraphics;
     [SerializeField] LayerMask enemyLayer;
+
+    [Space]
+
+    [SerializeField] List<GameObject> gunsToSpawn = new List<GameObject>();
 
     private Transform target;
 
@@ -155,9 +157,9 @@ public class Enemy : MonoBehaviour
             Enemy e = enemy.GetComponent<Enemy>();
             if(e != null && !hasAppliedBuff)
             {
-                e.health *= 1.5f;
-                e.speed *= 1.5f;
-                e.enemyAttackRate *= 1.5f;
+                e.health *= 2f;
+                e.speed *= 2f;
+                e.enemyAttackRate *= 2f;
                 e.melleDamage *= 2f;
                 hasAppliedBuff = true;
             }
@@ -204,6 +206,16 @@ public class Enemy : MonoBehaviour
         {
             waveSystem.enemyCount++;
             target.GetComponent<Player>().scoreAmmount += scoreToGive;
+
+            //Some very shitty rng implementation
+            int randomGunChance = Random.Range(0, 10);
+            if(randomGunChance == 5)
+            {
+                int randomGun = Random.Range(0, gunsToSpawn.Count);
+                Instantiate(gunsToSpawn[randomGun], transform.position, Quaternion.identity);
+                gunsToSpawn.Remove(gunsToSpawn[randomGun]);
+            }
+            
             Destroy(gameObject);
         }
     }

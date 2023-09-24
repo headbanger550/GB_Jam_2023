@@ -21,6 +21,7 @@ MonoBehaviour:
   - {fileID: 7176727642907536946, guid: a9988e490bac37646b86799381c49845, type: 3}
   isGun: 1
   hasSpread: 0
+  hasShotLine: 1
   isMelle: 0
   range: 0
   upgradeId: 1

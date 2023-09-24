@@ -17,11 +17,21 @@ MonoBehaviour:
   weaponSprite: {fileID: 21300000, guid: ea10f302b748b4749ae1fcdbc41df382, type: 3}
   damage: 1
   fireRate: 2
-  impactEffects: []
+  impactEffects:
+  - {fileID: 7176727642907536946, guid: a9988e490bac37646b86799381c49845, type: 3}
   isGun: 1
   hasSpread: 1
+  hasShotLine: 1
   isMelle: 0
   range: 0
+  upgradeId: 0
+  upgradeGroup: 0000000000000000
+  upgradeImages:
+  - {fileID: 0}
+  - {fileID: 0}
+  descriptions:
+  - 
+  - 
   layersToHit:
     serializedVersion: 2
     m_Bits: 55

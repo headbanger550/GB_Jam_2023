@@ -10,6 +10,7 @@ public class EnemyObject
 {
     public GameObject enemyPrefab;
     public int cost;
+    public int spawnTime;
 }
 
 public class WaveSystem : MonoBehaviour
@@ -69,6 +70,11 @@ public class WaveSystem : MonoBehaviour
         {
             //The wave ends
             endedWaves++;
+            currWave++;
+            for(int i = 0; i < enemies.Count; i++)
+            {
+                enemies[i].spawnTime++;
+            }
         }
     }
 
@@ -87,16 +93,19 @@ public class WaveSystem : MonoBehaviour
         while(waveValue > 0)
         {
             int randEnemyId = Random.Range(0, enemies.Count);
-            int randEnemyCost = enemies[randEnemyId].cost;
+            if(enemies[randEnemyId].spawnTime >= 0)
+            {
+                int randEnemyCost = enemies[randEnemyId].cost;
 
-            if(waveValue-randEnemyCost >= 0)
-            {
-                generatedEnemies.Add(enemies[randEnemyId].enemyPrefab);
-                waveValue -= randEnemyCost;
-            }
-            else if(waveValue <= 0)
-            {
-                break;
+                if(waveValue-randEnemyCost >= 0)
+                {
+                    generatedEnemies.Add(enemies[randEnemyId].enemyPrefab);
+                    waveValue -= randEnemyCost;
+                }
+                else if(waveValue <= 0)
+                {
+                    break;
+                }
             }
         }
         enemiesToSpawn.Clear();

@@ -130,6 +130,12 @@ MonoBehaviour:
   enemyLayer:
     serializedVersion: 2
     m_Bits: 128
+  gunsToSpawn:
+  - {fileID: 3692940318814932898, guid: 16038dfba135ce443b7d80d1c1df8901, type: 3}
+  - {fileID: 5400784233002178669, guid: 9de619cdf31adee45b388b8a5a32e626, type: 3}
+  - {fileID: 4219181035929026794, guid: 1ff05abbcde960344b104096567e45cd, type: 3}
+  - {fileID: 6880049827191622288, guid: 9ef56cc1f1736a048b36a414784deb9b, type: 3}
+  - {fileID: 7897933835553845947, guid: d62a60ce9402d94479eb87030c686576, type: 3}
 --- !u!1 &4842639516406334737
 GameObject:
   m_ObjectHideFlags: 0
